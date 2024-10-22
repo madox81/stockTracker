@@ -1,0 +1,98 @@
+body {
+	background-color: #f7f7f7;
+	font-size: 60%;
+}
+
+.container {
+	margin-top: 50px;
+}
+
+.form-section {
+	background: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+.form-control,
+.btn {
+	border-radius: 5px;
+}
+
+.result-section {
+	margin-top: 30px;
+	background: #fff;
+	padding: 20px;
+	border-radius: 10px;
+	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn {
+	margin-top: 10px;
+	background-color: #007bff;
+	color: white;
+}
+
+.btn:hover {
+	background-color: #0056b3;
+}
+
+.result-section {
+	display: none;
+}
+
+#loadingSpinner {
+	display: none;
+	margin: 20px auto;
+	border: 8px solid #f3f3f3;
+	border-radius: 50%;
+	border-top: 8px solid #3498db;
+	width: 50px;
+	height: 50px;
+	animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+	0% { transform: rotate(0deg); }
+	100% { transform: rotate(360deg); }
+}
+
+/* For screens wider than 576px (small tablets and larger) */
+@media (min-width: 576px) {
+    body {
+        font-size: 70%; /* Increase font size for small tablets */
+    }
+}
+
+/* For screens wider than 768px (tablets) */
+@media (min-width: 768px) {
+    body {
+        font-size: 80%; /* Increase font size for tablets */
+    }
+}
+
+/* For screens wider than 992px (desktops and larger) */
+@media (min-width: 992px) {
+    body {
+        font-size: 100%; /* Full font size for desktops */
+    }
+}
+
+/* Chart container responsiveness */
+.chart-container {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 5px;
+    font-size: 1em;
+    overflow-x: auto;
+}
+
+/* Adjust the table for smaller screens */
+.table-container {
+    overflow-x: auto; /* Enable horizontal scroll for small screens */
+}
+
+.table {
+    width: 100%; /* Full width on all screens */
+    font-size: 1em; /* Ensure the font size scales with the body font size */
+}
