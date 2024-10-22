@@ -17,6 +17,13 @@ $(document).ready(function() {
             // Show the spinner
             $('#loadingSpinner').show();
 
+
+            // Hide result section and clear data table
+            if ($('#resultSection').is(':visible')) {
+                $('#resultSection').hide();
+                $('tbody').html('');
+            }
+
             // Perform AJAX request to the server to fetch stock data
             $.ajax({
                 url: url,
@@ -103,7 +110,7 @@ $(document).ready(function() {
                 },
                 error: function(err) {
                     $('#loadingSpinner').hide();
-                    alert(JSON.stringify(err));
+                    alert(err.responseJSON.error);
                 }
             });
         } else {
