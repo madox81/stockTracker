@@ -14,7 +14,6 @@ def fetch_data(request):
     end = request.POST.get("endDate")
 
     result = fetch(ticker, start, end)
-    print(result)
     if "error" in result:
         return JsonResponse(result, status=400)
     else:

@@ -1,16 +1,18 @@
 $(document).ready(function() {
-	
+
+    let stockChart = null;
+
     $('#stockForm').on('submit', function(event) {
 
         event.preventDefault();
 
-        let ticker = $('#ticker').val();
-        let startDate = $('#startDate').val();
-        let endDate = $('#endDate').val();
+        const ticker = $('#ticker').val();
+        const startDate = $('#startDate').val();
+        const endDate = $('#endDate').val();
 
-        let url = $(this).data('fetch-url')
+        const url = $(this).data('fetch-url');
 
-        let csrf_token = $('input[name=csrfmiddlewaretoken]').val()
+        const csrf_token = $('input[name=csrfmiddlewaretoken]').val();
 
         if (ticker && startDate && endDate) {
 
@@ -38,21 +40,21 @@ $(document).ready(function() {
                 },
                 success: function(response) {
 
-                    data = response.data
+                    const data = response.data;
 
                     // Hide the spinner
                     $('#loadingSpinner').hide();
 
                     // Populate the table with fetched data
-                    tableBody = data.map(record => {
+                    const tableBody = data.map(record => {
                         return `
-							<tr>
-									<td>${record.Date}</td>
-									<td>${record.Open}</td>
-									<td>${record.Close}</td>
-									<td>${record.Volume}</td>
-							</tr>
-						`
+                            <tr>
+                                    <td>${record.Date}</td>
+                                    <td>${record.Open}</td>
+                                    <td>${record.Close}</td>
+                                    <td>${record.Volume}</td>
+                            </tr>
+                        `
                     }).join("")
 
                     $('tbody').html(tableBody);
@@ -60,53 +62,62 @@ $(document).ready(function() {
                     // Display the result section
                     $('#resultSection').fadeIn();
 
-                    // Generate the Plotly chart with responsive layout
+                    // Generate the Chart.js chart with responsive layout
+                    const ctx = $('#stockChart').get(0).getContext('2d');
+                    const dates = data.map(record => record.Date);
+                    const open = data.map(record => record.Open);
+                    const close = data.map(record => record.Close);
 
-                    dates = data.map(record => record.Date)
-                    open = data.map(record => record.Open)
-                    close = data.map(record => record.Close)
+                    if (stockChart instanceof Chart) {
+                        stockChart.destroy();
+                    }
 
-                    let traceOpen = {
-                        x: dates,
-                        y: open,
-                        mode: 'scatter',
-                        name: 'Open Price',
-                        line: {
-                            color: 'red'
-                        }
-                    };
-
-                    let traceClose = {
-                        x: dates,
-                        y: close,
-                        mode: 'scatter',
-                        name: 'Close Price',
-                        line: {
-                            color: 'blue'
-                        }
-                    };
-
-                    let layout = {
-                        title: `${ticker.toUpperCase()} Stock Price from ${startDate} to ${endDate}`,
-                        xaxis: {
-                            title: 'Date'
+                    stockChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dates,
+                            datasets: [{
+                                label: 'Open Price',
+                                data: open,
+                                borderColor: 'red',
+                                fill: false,
+                                tension: 0.1
+                            }, {
+                                label: 'Close Price',
+                                data: close,
+                                borderColor: 'blue',
+                                fill: false,
+                                tension: 0.1
+                            }]
                         },
-                        yaxis: {
-                            title: 'Price (USD)'
-                        },
-                        // legend: {
-                        //     orientation: 'h',  // Set the legend orientation to horizontal
-                        //     y: -0.2,  // Move the legend below the chart
-                        //     x: 0.5,  // Center the legend horizontally
-                        //     xanchor: 'center',  // Align the legend's horizontal center
-                        //     yanchor: 'top'  // Align the top of the legend to the bottom of the chart
-                        // }
-                    };
-
-                    let config = {
-                        responsive: true
-                    }; // Extra config for responsiveness
-                    Plotly.newPlot('stockChart', [traceOpen, traceClose], layout, config);
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                title:{
+                                    display: true,
+                                    text: `${ticker.toUpperCase()} open & close prices from ${startDate} to ${endDate}`
+                                },
+                                legend: {
+                                    position: 'bottom' // Move legend to bottom
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: 'Date'
+                                    }
+                                },
+                                y: {
+                                    title: {
+                                        display: true,
+                                        text: 'Price (USD)'
+                                    }
+                                }
+                            }
+                        }
+                    });
                 },
                 error: function(err) {
                     $('#loadingSpinner').hide();
@@ -117,4 +128,9 @@ $(document).ready(function() {
             alert('Please fill in all fields.');
         }
     });
+
+    $('.chart-container').on('resize', () => {
+        stockChart.canvas.parentNode.style.height = '100%'
+    });
+
 });

@@ -74,13 +74,14 @@ body {
 @media (min-width: 992px) {
     body {
         font-size: 100%; /* Full font size for desktops */
-    }
+    },
 }
 
 /* Chart container responsiveness */
 .chart-container {
+	position: relative;
     width: 100%;
-    height: auto;
+    height: 50vh;
     margin: 0 auto;
     padding: 5px;
     font-size: 1em;

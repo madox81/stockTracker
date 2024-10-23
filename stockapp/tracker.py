@@ -44,7 +44,7 @@ def fetch(symbol, start_date, end_date):
         return {"error": f"Date Error: {ve}"}
 
     except Exception as e:
-        return {"error": e}
+        return {"error": str(e)}
 
 
 if __name__ == "__main__":
