@@ -1,5 +1,4 @@
 import sys
-import json
 import pandas as pd
 from yfinance import Ticker
 from datetime import datetime
@@ -54,7 +53,7 @@ if __name__ == "__main__":
     try:
         while True:
             ticker = input(
-                "Please enter a ticker (e.g., AAPL) or type 'exit' to quit: "
+                "\nPlease enter a ticker (e.g., AAPL) or type 'exit' to quit: "
             ).upper()
             if ticker == "EXIT":
                 print("Exiting the program. Goodbye!")
@@ -67,7 +66,7 @@ if __name__ == "__main__":
             try:
                 datetime.strptime(start, "%Y-%m-%d")
                 datetime.strptime(end, "%Y-%m-%d")
-                print("\nFetching >>>")
+                print("\nFetching >>>\n")
                 result = fetch(ticker, start, end)
                 show(ticker, start, end, result)
             except ValueError as ve:
